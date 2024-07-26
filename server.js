@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const authRouter = require('./routes/auth/authRouter');
 const userRouter = require('./routes/user');
+const customerRouter = require('./routes/customer');
 
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
@@ -13,8 +14,12 @@ const credentials = require('./middleware/credentials');
 
 const mongoURI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@gymappcluster.rs63kkd.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
+const options = {
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+};
+
 mongoose
-  .connect(mongoURI)
+  .connect(mongoURI, options)
   .then(() => {
     console.log('Connected to Mongodb');
   })
@@ -29,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/auth/', authRouter);
 app.use('/api/v1/user/', userRouter);
+app.use('/api/v1/customer/', customerRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
