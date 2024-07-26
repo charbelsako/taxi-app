@@ -34,7 +34,6 @@ const Login = () => {
       });
       setAuth({
         email: response.data.data.email,
-        role: response.data.data.role,
         token: response.data.data.accessToken,
       });
       navigate('/', { replace: true });

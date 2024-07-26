@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className='navbar navbar-expand-lg navbar-light bg-light'>
       <div className='container'>
         <Link to='/' className='navbar-brand'>
-          MORE gym
+          Yes Taxi
         </Link>
         <button
           className='navbar-toggler'
@@ -34,17 +34,6 @@ const Navbar = () => {
             {auth.email && (
               <>
                 <li>
-                  <Link to='/' className='nav-link'>
-                    Home
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to='/profile' className='nav-link'>
-                    My profile
-                  </Link>
-                </li>
-                <li>
                   <button
                     onClick={signOut}
                     className='nav-link btn btn-outline-danger d-inline p-1 m-1'
@@ -60,11 +49,6 @@ const Navbar = () => {
                 <li>
                   <Link to='/login' className='nav-link'>
                     Login{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link to='/signup' className='nav-link'>
-                    Sign up{' '}
                   </Link>
                 </li>
               </>

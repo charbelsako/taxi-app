@@ -10,10 +10,10 @@ function App() {
     <div className='App'>
       <Routes>
         <Route path='/' element={<Layout />}>
+          <Route path='/login' element={<Login />}></Route>
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth />}>
-              <Route path='/login' element={<Login />}></Route>
-              <Route path='/home' element={<Home />}></Route>
+              <Route path='/' element={<Home />}></Route>
             </Route>
           </Route>
         </Route>
