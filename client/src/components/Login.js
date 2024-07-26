@@ -37,7 +37,7 @@ const Login = () => {
         role: response.data.data.role,
         token: response.data.data.accessToken,
       });
-      navigate('/choose-location', { replace: true });
+      navigate('/', { replace: true });
     } catch (err) {
       console.log(err);
       if (err.response.data.errors) {

@@ -4,8 +4,6 @@ import { createContext, useState } from 'react';
 const AuthContext = createContext({
   auth: { token: '' },
   setAuth: () => {},
-  location: '',
-  setLocation: () => {},
 });
 
 const { Provider } = AuthContext;
@@ -15,15 +13,11 @@ export const AuthProvider = ({ children }) => {
     token: '',
   });
 
-  const [location, setLocation] = useState('');
-
   return (
     <Provider
       value={{
         auth,
-        location,
         setAuth,
-        setLocation,
       }}
     >
       {children}
