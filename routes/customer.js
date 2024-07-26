@@ -2,8 +2,9 @@ const express = require('express');
 const { sendError, sendResponse } = require('../responseHandler');
 const router = express.Router();
 const Customer = require('../models/Customer');
+const { verifyJWT } = require('../middleware/verifyJWT');
 
-router.post('/create', async (req, res) => {
+router.post('/create', verifyJWT, async (req, res) => {
   try {
     const { name, phone, address } = req.body;
 
@@ -29,7 +30,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', verifyJWT, async (req, res) => {
   try {
     const customerList = await Customer.find({})
       .sort({ updatedAt: -1 })
@@ -41,7 +42,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
-router.get('/:phone', async (req, res) => {
+router.get('/:phone', verifyJWT, async (req, res) => {
   try {
     const customer = await Customer.findOne({ phone: req.params.phone });
     sendResponse(res, customer);
