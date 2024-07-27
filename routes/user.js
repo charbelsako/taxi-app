@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const { verifyJWT } = require('../middleware/verifyJWT');
 
-router.post('/register-admin', async (req, res) => {
+router.post('/register-admin', verifyJWT, async (req, res) => {
   try {
     const { username, password, name } = req.body;
 
