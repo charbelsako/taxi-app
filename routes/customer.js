@@ -9,10 +9,12 @@ router.post('/create', verifyJWT, async (req, res) => {
     const { name, phone, address } = req.body;
 
     // Check if the username already exists
-    const existingUser = await User.findOne({ phone });
+    const existingCustomer = await Customer.findOne({ phone });
 
-    if (existingUser) {
-      return sendError({ res, error: 'Customer already exists', code: 409 });
+    if (existingCustomer) {
+      existingCustomer.address = address;
+      await existingCustomer.save();
+      return sendResponse(res, { isUpdated: true });
     }
 
     const newCustomer = new Customer({

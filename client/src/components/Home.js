@@ -57,12 +57,17 @@ const Home = () => {
   const createCustomer = async e => {
     try {
       e.preventDefault();
-      await axios.post('/api/v1/customer/create', {
+      const response = await axios.post('/api/v1/customer/create', {
         phone,
         name,
         address,
       });
-      setSuccess('Successfully created a customer');
+
+      if (response.data.data.isUpdated) {
+        setSuccess('Updated Customer');
+      } else {
+        setSuccess('Successfully created a customer');
+      }
     } catch (err) {
       setError(err.message);
       console.error(err);
