@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const authRouter = require('./routes/auth/authRouter');
 const userRouter = require('./routes/user');
 const customerRouter = require('./routes/customer');
+const pricingRouter = require('./routes/pricing');
 
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/auth/', authRouter);
 app.use('/api/v1/user/', userRouter);
 app.use('/api/v1/customer/', customerRouter);
+app.use('/api/v1/pricing/', pricingRouter);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('production mode');
