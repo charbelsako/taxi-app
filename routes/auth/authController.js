@@ -20,7 +20,10 @@ async function handleLogin(req, res) {
 
     const match = await bcrypt.compare(password, foundUser.password);
     if (!match) {
-      return sendError({ res, code: statusCodes.UNAUTHORIZED });
+      return sendError({
+        res,
+        code: statusCodes.UNAUTHORIZED,
+      });
     }
 
     const accessToken = jwt.sign(
