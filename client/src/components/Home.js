@@ -75,10 +75,16 @@ const Home = () => {
         price,
       });
 
-      setPriceSuccess('Added Price');
+      if (response.data.data.isUpdated) {
+        setPriceSuccess('Updated Price');
+      } else {
+        setPriceSuccess('Added Price');
+      }
+      setPriceError('');
     } catch (err) {
       console.error(err);
-      setPriceError(err.message);
+      setPriceError(err.response.data.error);
+      setPriceSuccess('');
     }
   };
 
@@ -157,7 +163,7 @@ const Home = () => {
           <div className='col-8'>
             <div className='mt-4 d-flex align-items-center justify-content-end'>
               <button className='btn btn-primary' onClick={createCustomer}>
-                Create Customer
+                Create / Update Customer
               </button>
             </div>
           </div>
@@ -186,9 +192,12 @@ const Home = () => {
       </div>
 
       <div>
-        {success && <div className='alert alert-success'>{priceSuccess}</div>}
-        {error && <div className='alert alert-danger'>{priceError}</div>}
         <h1>Pricing</h1>
+
+        {priceSuccess && (
+          <div className='alert alert-success'>{priceSuccess}</div>
+        )}
+        {priceError && <div className='alert alert-danger'>{priceError}</div>}
         <div className='row align-items-center'>
           <div className='col-2'>
             <label htmlFor='from'>From</label>
@@ -228,7 +237,7 @@ const Home = () => {
         <div className='row'>
           <div className='col-8 mt-4 d-flex justify-content-end'>
             <button className='btn btn-primary' onClick={addPrice}>
-              Add Price
+              Add / Update Price
             </button>
           </div>
         </div>
