@@ -10,7 +10,24 @@ const Home = () => {
   const [address, setAddress] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [priceSuccess, setPriceSuccess] = useState('');
+  const [priceError, setPriceError] = useState('');
   const [customerList, setCustomerList] = useState([]);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [price, setPrice] = useState('');
+
+  const onFromChange = e => {
+    setFrom(e.target.value);
+  };
+
+  const onToChange = e => {
+    setTo(e.target.value);
+  };
+
+  const onPriceChange = e => {
+    setPrice(e.target.value);
+  };
 
   const onPhoneChange = e => {
     setPhone(e.target.value);
@@ -47,6 +64,21 @@ const Home = () => {
     } catch (err) {
       setError(err.message);
       console.error(err);
+    }
+  };
+
+  const addPrice = async () => {
+    try {
+      const response = await axios.post('/api/v1/pricing/add', {
+        from,
+        to,
+        price,
+      });
+
+      setPriceSuccess('Added Price');
+    } catch (err) {
+      console.error(err);
+      setPriceError(err.message);
     }
   };
 
@@ -151,6 +183,55 @@ const Home = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div>
+        {success && <div className='alert alert-success'>{priceSuccess}</div>}
+        {error && <div className='alert alert-danger'>{priceError}</div>}
+        <h1>Pricing</h1>
+        <div className='row align-items-center'>
+          <div className='col-2'>
+            <label htmlFor='from'>From</label>
+          </div>
+          <div className='col-6'>
+            <TextFieldGroup
+              placeholder='Enter From Area'
+              value={from}
+              onChange={onFromChange}
+            />
+          </div>
+        </div>
+        <div className='row align-items-center mt-4'>
+          <div className='col-2'>
+            <label htmlFor='to'>To</label>
+          </div>
+          <div className='col-6'>
+            <TextFieldGroup
+              placeholder='Enter To Area'
+              value={to}
+              onChange={onToChange}
+            />
+          </div>
+        </div>
+        <div className='row align-items-center mt-4 '>
+          <div className='col-2'>
+            <label htmlFor='price'>Price</label>
+          </div>
+          <div className='col-6'>
+            <TextFieldGroup
+              placeholder='Enter Price'
+              value={price}
+              onChange={onPriceChange}
+            />
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col-8 mt-4 d-flex justify-content-end'>
+            <button className='btn btn-primary' onClick={addPrice}>
+              Add Price
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
