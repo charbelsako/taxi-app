@@ -14,6 +14,7 @@ const TextFieldGroup = ({
   onChange,
   disabled,
   required,
+  isLarge,
 }) => {
   return (
     <>
@@ -25,8 +26,9 @@ const TextFieldGroup = ({
       )}
       <input
         type={type}
-        className={classnames('form-control form-control-lg', {
+        className={classnames('form-control', {
           'is-invalid': error,
+          'form-control-lg': isLarge,
         })}
         placeholder={placeholder}
         name={name}

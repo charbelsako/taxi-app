@@ -11,8 +11,7 @@ router.post('/add', verifyJWT, async (req, res) => {
     to = to.toLowerCase();
     const existingPrice = await Pricing.findOne({ from, to });
     if (existingPrice) {
-      // @NOTE: update price
-      existingPrice.price == price;
+      existingPrice.price = price;
       await existingPrice.save();
       return sendResponse(res, { isUpdated: true });
     }
@@ -26,20 +25,13 @@ router.post('/add', verifyJWT, async (req, res) => {
   }
 });
 
-// router.get('/:from', verifyJWT, async (req, res) => {
-//   try {
-//     const price = await Pricing.findOne({ from: req.params.from });
-//     sendResponse(res, price);
-//   } catch (error) {
-//     console.error('Error while fetching price', error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
 router.get('/search', verifyJWT, async (req, res) => {
   try {
     const { from, to } = req.query;
     const price = await Pricing.findOne({ from, to });
+    if (!price) {
+      return sendError({ res, error: 'Could not find price', code: 404 });
+    }
     sendResponse(res, price);
   } catch (error) {
     console.error('Error while fetching price', error);
@@ -47,22 +39,11 @@ router.get('/search', verifyJWT, async (req, res) => {
   }
 });
 
-router.get('/from', verifyJWT, async (req, res) => {
+router.get('/locations', verifyJWT, async (req, res) => {
   try {
-    const fromPrices = await Pricing.find({});
-    const fromList = fromPrices.map(price => price.from);
-    sendResponse(res, fromList);
-  } catch (error) {
-    console.error('Error while fetching from locations', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-router.get('/to', verifyJWT, async (req, res) => {
-  try {
-    const toPrices = await Pricing.find({});
-    const toList = toPrices.map(price => price.to);
-    sendResponse(res, toList);
+    const toPrices = await Pricing.distinct('to');
+    const fromPrices = await Pricing.distinct('from');
+    sendResponse(res, [...toPrices, ...fromPrices]);
   } catch (error) {
     console.error('Error while fetching to locations', error);
     res.status(500).json({ message: 'Internal server error' });

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TextFieldGroup from './TextFieldGroup';
 import TextAreaFieldGroup from './TextAreaFieldGroup';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import CreatableSelect from 'react-select/creatable';
 
 const Home = () => {
   const axios = useAxiosPrivate();
@@ -16,13 +17,14 @@ const Home = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState('');
+  const [locations, setLocationsList] = useState([]);
 
-  const onFromChange = e => {
-    setFrom(e.target.value);
+  const onFromChange = option => {
+    setFrom(option.value);
   };
 
-  const onToChange = e => {
-    setTo(e.target.value);
+  const onToChange = option => {
+    setTo(option.value);
   };
 
   const onPriceChange = e => {
@@ -88,6 +90,20 @@ const Home = () => {
     }
   };
 
+  const fetchPrice = async () => {
+    try {
+      const priceResponse = await axios.get(
+        `/api/v1/pricing/search?from=${from}&to=${to}`
+      );
+      setPrice(priceResponse.data.data.price);
+      setPriceError('');
+    } catch (err) {
+      console.error(err);
+      setPriceError('Could not find price');
+      setPriceSuccess('');
+    }
+  };
+
   useEffect(() => {
     const fetchLastUpdatedUsers = async () => {
       try {
@@ -103,6 +119,32 @@ const Home = () => {
 
     fetchLastUpdatedUsers();
   }, [axios]);
+
+  useEffect(() => {
+    const fetchLocationsList = async () => {
+      try {
+        const locationList = await axios.get('/api/v1/pricing/locations');
+        setLocationsList(locationList.data.data);
+        setError('');
+      } catch (err) {
+        setError(err.message);
+        setSuccess('');
+        console.log(err);
+      }
+    };
+    fetchLocationsList();
+  }, [axios]);
+
+  const capitalizeFirstLetter = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const formatOptions = options => {
+    return options.map(option => ({
+      value: option,
+      label: capitalizeFirstLetter(option),
+    }));
+  };
 
   return (
     <div className='container'>
@@ -123,6 +165,7 @@ const Home = () => {
               value={phone}
               name='phone'
               onChange={onPhoneChange}
+              isLarge={true}
             />
           </div>
           <div className='col-4'>
@@ -143,6 +186,7 @@ const Home = () => {
               value={name}
               onChange={onNameChange}
               name='name'
+              isLarge={true}
             />
           </div>
         </div>
@@ -156,6 +200,7 @@ const Home = () => {
               placeholder='address'
               value={address}
               onChange={onAddressChange}
+              isLarge={true}
             />
           </div>
         </div>
@@ -193,44 +238,61 @@ const Home = () => {
 
       <div>
         <h1>Pricing</h1>
-
         {priceSuccess && (
           <div className='alert alert-success'>{priceSuccess}</div>
         )}
         {priceError && <div className='alert alert-danger'>{priceError}</div>}
-        <div className='row align-items-center'>
+        <div className='row d-flex align-items-center'>
           <div className='col-2'>
-            <label htmlFor='from'>From</label>
+            <label htmlFor='from' className='my-auto'>
+              From
+            </label>
           </div>
           <div className='col-6'>
-            <TextFieldGroup
+            <CreatableSelect
               placeholder='Enter From Area'
-              value={from}
+              value={formatOptions(locations).find(
+                option => option.value === from
+              )}
               onChange={onFromChange}
+              options={formatOptions(locations)}
             />
           </div>
         </div>
         <div className='row align-items-center mt-4'>
           <div className='col-2'>
-            <label htmlFor='to'>To</label>
+            <label htmlFor='to' className='my-auto'>
+              To
+            </label>
           </div>
           <div className='col-6'>
-            <TextFieldGroup
+            <CreatableSelect
               placeholder='Enter To Area'
-              value={to}
+              value={formatOptions(locations).find(
+                option => option.value === to
+              )}
               onChange={onToChange}
+              options={formatOptions(locations)}
             />
+          </div>
+          <div className='col-2'>
+            <button className='btn btn-success' onClick={fetchPrice}>
+              Search
+            </button>
           </div>
         </div>
         <div className='row align-items-center mt-4 '>
           <div className='col-2'>
-            <label htmlFor='price'>Price</label>
+            <label htmlFor='price' className='my-auto'>
+              Price
+            </label>
           </div>
           <div className='col-6'>
             <TextFieldGroup
               placeholder='Enter Price'
               value={price}
               onChange={onPriceChange}
+              isLarge={false}
             />
           </div>
         </div>
