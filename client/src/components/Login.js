@@ -42,7 +42,7 @@ const Login = () => {
       if (err.response.data.errors) {
         setErrors(err.response.data.errors);
       } else {
-        setError(err.response.data);
+        setError(err.response.data.message);
       }
     }
   };
@@ -55,24 +55,28 @@ const Login = () => {
           {error && <p className='text-danger'>{error}</p>}
 
           <form onSubmit={onSubmit}>
-            <TextFieldGroup
-              name='email'
-              type='email'
-              placeholder='Email Address'
-              value={email}
-              onChange={onChangeEmail}
-              error={errors.email}
-            />
-
-            <TextFieldGroup
-              name='password'
-              type='password'
-              placeholder='Password'
-              value={password}
-              onChange={onChangePassword}
-              error={errors.password}
-            />
-
+            <div className='form-group'>
+              <TextFieldGroup
+                name='email'
+                type='email'
+                placeholder='Email Address'
+                value={email}
+                onChange={onChangeEmail}
+                error={errors.email}
+                isLarge={true}
+              />
+            </div>
+            <div className='form-group'>
+              <TextFieldGroup
+                name='password'
+                type='password'
+                placeholder='Password'
+                value={password}
+                onChange={onChangePassword}
+                error={errors.password}
+                isLarge={true}
+              />
+            </div>
             <input type='submit' className='btn btn-info btn-block mt-4' />
           </form>
         </div>
