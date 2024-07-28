@@ -64,6 +64,7 @@ const Login = () => {
                 onChange={onChangeEmail}
                 error={errors.email}
                 isLarge={true}
+                autoCapitalize='none'
               />
             </div>
             <div className='form-group'>
