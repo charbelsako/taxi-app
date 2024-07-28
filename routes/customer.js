@@ -25,7 +25,7 @@ router.post('/create', verifyJWT, async (req, res) => {
 
     await newCustomer.save();
 
-    res.status(201).json({ message: 'Customer created successfully' });
+    sendResponse(res, { message: 'Customer created Successfully' });
   } catch (error) {
     console.error('Error during creation:', error);
     res.status(500).json({ message: 'Internal server error' });
