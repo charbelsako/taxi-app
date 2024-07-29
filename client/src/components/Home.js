@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TextFieldGroup from './TextFieldGroup';
 import TextAreaFieldGroup from './TextAreaFieldGroup';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -18,6 +18,7 @@ const Home = () => {
   const [to, setTo] = useState('');
   const [price, setPrice] = useState('');
   const [locations, setLocationsList] = useState([]);
+  const inputRef = useRef(null);
 
   const onFromChange = option => {
     setFrom(option.value);
@@ -71,8 +72,13 @@ const Home = () => {
       setPhone('');
       setName('');
       setAddress('');
+      inputRef.current.focus();
     } catch (err) {
-      setError(err.message);
+      if (err.response) {
+        setError(err.response.data.error);
+      } else {
+        setError(err.message);
+      }
       console.error(err);
     }
   };
@@ -110,6 +116,15 @@ const Home = () => {
       setPriceError('Could not find price');
       setPriceSuccess('');
     }
+  };
+
+  const clearForm = () => {
+    setPhone('');
+    setName('');
+    setAddress('');
+    console.log(inputRef);
+    console.log(inputRef.current);
+    inputRef.current.focus();
   };
 
   useEffect(() => {
@@ -174,6 +189,7 @@ const Home = () => {
               name='phone'
               onChange={onPhoneChange}
               isLarge={true}
+              inputRef={inputRef}
             />
           </div>
           <div className='col-4'>
@@ -213,7 +229,14 @@ const Home = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-8'>
+          <div className='col-2'>
+            <div className='mt-4'>
+              <button className='btn btn-info' onClick={clearForm}>
+                Clear
+              </button>
+            </div>
+          </div>
+          <div className='col-6'>
             <div className='mt-4 d-flex align-items-center justify-content-end'>
               <button className='btn btn-primary' onClick={createCustomer}>
                 Create / Update Customer
