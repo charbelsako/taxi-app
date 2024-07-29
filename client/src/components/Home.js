@@ -47,6 +47,10 @@ const Home = () => {
   const fetchUserData = async e => {
     try {
       e.preventDefault();
+      if (phone === '') {
+        setError('Phone field is empty');
+        return;
+      }
       const customer = await axios.get(`/api/v1/customer/${phone}`);
       setName(customer.data.data.name);
       setAddress(customer.data.data.address);
@@ -183,26 +187,28 @@ const Home = () => {
         {success && <div className='alert alert-success'>{success}</div>}
         {error && <div className='alert alert-danger'>{error}</div>}
         {/* Phone Input */}
-        <div className='row align-items-center mt-4'>
-          <div className='col-2'>
-            <label htmlFor=''>Phone:</label>
+        <form onSubmit={fetchUserData}>
+          <div className='row align-items-center mt-4'>
+            <div className='col-2'>
+              <label htmlFor=''>Phone:</label>
+            </div>
+            <div className='col-6'>
+              <TextFieldGroup
+                placeholder='Enter Phone'
+                value={phone}
+                name='phone'
+                onChange={onPhoneChange}
+                isLarge={true}
+                inputRef={inputRef}
+              />
+            </div>
+            <div className='col-4'>
+              <button className='btn btn-success' type='submit'>
+                Search
+              </button>
+            </div>
           </div>
-          <div className='col-6'>
-            <TextFieldGroup
-              placeholder='Enter Phone'
-              value={phone}
-              name='phone'
-              onChange={onPhoneChange}
-              isLarge={true}
-              inputRef={inputRef}
-            />
-          </div>
-          <div className='col-4'>
-            <button className='btn btn-success' onClick={fetchUserData}>
-              Search
-            </button>
-          </div>
-        </div>
+        </form>
 
         {/* Name */}
         <div className='row align-items-center mt-4'>
