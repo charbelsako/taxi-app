@@ -19,6 +19,8 @@ const Home = () => {
   const [price, setPrice] = useState('');
   const [locations, setLocationsList] = useState([]);
   const inputRef = useRef(null);
+  const [shouldUpdateUsers, setShouldUpdateUsers] = useState(false);
+  const [shouldUpdateLocations, setShouldUpdateLocations] = useState(false);
 
   const onFromChange = option => {
     setFrom(option.value);
@@ -73,6 +75,7 @@ const Home = () => {
       setName('');
       setAddress('');
       inputRef.current.focus();
+      setShouldUpdateUsers(true);
     } catch (err) {
       if (err.response) {
         setError(err.response.data.error);
@@ -97,6 +100,7 @@ const Home = () => {
         setPriceSuccess('Added Price');
       }
       setPriceError('');
+      setShouldUpdateLocations(true);
     } catch (err) {
       console.error(err);
       setPriceError(err.response.data.error);
@@ -115,6 +119,7 @@ const Home = () => {
       console.error(err);
       setPriceError('Could not find price');
       setPriceSuccess('');
+      setPrice('');
     }
   };
 
@@ -141,7 +146,7 @@ const Home = () => {
     };
 
     fetchLastUpdatedUsers();
-  }, [axios]);
+  }, [axios, shouldUpdateUsers]);
 
   useEffect(() => {
     const fetchLocationsList = async () => {
@@ -156,7 +161,7 @@ const Home = () => {
       }
     };
     fetchLocationsList();
-  }, [axios]);
+  }, [axios, shouldUpdateLocations]);
 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
