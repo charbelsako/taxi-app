@@ -3,11 +3,19 @@ const { sendError, sendResponse } = require('../responseHandler');
 const router = express.Router();
 const Customer = require('../models/Customer');
 const { verifyJWT } = require('../middleware/verifyJWT');
+const { statusCodes } = require('../constants');
 
 router.post('/create', verifyJWT, async (req, res) => {
   try {
     const { name, phone, address } = req.body;
 
+    if (name === '' || phone === '' || address === '') {
+      return sendError({
+        res,
+        error: 'Missing input',
+        code: statusCodes.BAD_REQUEST,
+      });
+    }
     // Check if the username already exists
     const existingCustomer = await Customer.findOne({ phone });
 
