@@ -60,9 +60,7 @@ async function handleLogin(req, res) {
 
 async function handleRefreshToken(req, res) {
   try {
-    console.log('refreshing');
     const cookies = req.cookies;
-    console.log(req.cookies);
     if (!cookies?.refreshToken) return sendError({ res, code: 401 });
 
     const refreshToken = cookies.refreshToken;
