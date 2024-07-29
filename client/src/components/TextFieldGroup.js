@@ -16,6 +16,7 @@ const TextFieldGroup = ({
   required,
   isLarge,
   autoCapitalize,
+  inputRef,
 }) => {
   return (
     <>
@@ -38,6 +39,7 @@ const TextFieldGroup = ({
         disabled={disabled}
         data-index={index}
         autoCapitalize={autoCapitalize}
+        ref={inputRef}
       />
       {info && <small className='form-text text-muted'>{info}</small>}
       {error && <div className='invalid-feedback'>{error}</div>}
