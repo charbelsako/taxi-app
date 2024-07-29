@@ -43,7 +43,10 @@ router.get('/locations', verifyJWT, async (req, res) => {
   try {
     const toPrices = await Pricing.distinct('to');
     const fromPrices = await Pricing.distinct('from');
-    sendResponse(res, [...toPrices, ...fromPrices]);
+
+    const uniqueLocations = [...new Set([...toPrices, ...fromPrices])];
+
+    sendResponse(res, uniqueLocations);
   } catch (error) {
     console.error('Error while fetching to locations', error);
     res.status(500).json({ message: 'Internal server error' });
