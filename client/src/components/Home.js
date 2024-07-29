@@ -68,6 +68,9 @@ const Home = () => {
       } else {
         setSuccess('Successfully created a customer');
       }
+      setPhone('');
+      setName('');
+      setAddress('');
     } catch (err) {
       setError(err.message);
       console.error(err);
