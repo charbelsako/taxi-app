@@ -258,24 +258,26 @@ const Home = () => {
       </div>
       <div>
         <h1>Customer List</h1>
-        <table className='table table-'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerList.map(customer => (
-              <tr key={customer._id}>
-                <td>{customer.name}</td>
-                <td>{customer.phone}</td>
-                <td>{customer.address}</td>
+        <div style={{ height: '400px', overflowY: 'scroll' }}>
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {customerList.map(customer => (
+                <tr key={customer._id}>
+                  <td>{customer.name}</td>
+                  <td>{customer.phone}</td>
+                  <td>{customer.address}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div>

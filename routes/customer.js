@@ -44,7 +44,7 @@ router.get('/all', verifyJWT, async (req, res) => {
   try {
     const customerList = await Customer.find({})
       .sort({ updatedAt: -1 })
-      .limit(10);
+      .limit(40);
     sendResponse(res, customerList);
   } catch (err) {
     console.log(err);
