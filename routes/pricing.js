@@ -28,7 +28,11 @@ router.post('/add', verifyJWT, async (req, res) => {
 router.get('/search', verifyJWT, async (req, res) => {
   try {
     const { from, to } = req.query;
-    const price = await Pricing.findOne({ from, to, isDeleted: false });
+    const price = await Pricing.findOne({
+      from,
+      to,
+      $or: [{ isDeleted: { $exists: false } }, { isDeleted: false }],
+    });
     if (!price) {
       return sendError({ res, error: 'Could not find price', code: 404 });
     }
@@ -56,10 +60,10 @@ router.get('/locations', verifyJWT, async (req, res) => {
 router.delete('/:id/delete', verifyJWT, async (req, res) => {
   try {
     const { id } = req.params;
-    await Pricing.findOneAndUpdate(id, { isDeleted: true });
+    await Pricing.findByIdAndUpdate(id, { isDeleted: true });
     sendResponse(res, { message: `Successfully deleted record ${id}` });
   } catch (error) {
-    console.error('Error while deleting record price');
+    console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
