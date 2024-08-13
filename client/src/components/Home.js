@@ -176,6 +176,7 @@ const Home = () => {
       });
 
       setPriceSuccess(`Renamed location ${from} to ${fromName}`);
+      setFrom(fromName);
       setPriceError('');
       setUpdateLocations(!updateLocations);
     } catch (err) {
@@ -312,7 +313,7 @@ const Home = () => {
       <div>
         <h1>Customer List</h1>
         <div style={{ height: '400px', overflowY: 'scroll' }}>
-          <table className='table'>
+          <table className='table' style={{ display: 'block' }}>
             <thead>
               <tr>
                 <th>Name</th>
