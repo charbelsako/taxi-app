@@ -21,7 +21,7 @@ const Home = () => {
   const [locations, setLocationsList] = useState([]);
   const inputRef = useRef(null);
   const [updateUsers, setUpdateUsers] = useState(false);
-  const [shouldUpdateLocations, setShouldUpdateLocations] = useState(false);
+  const [updateLocations, setUpdateLocations] = useState(false);
 
   const onFromChange = option => {
     setFrom(option.value);
@@ -106,7 +106,7 @@ const Home = () => {
         setPriceSuccess('Added Price');
       }
       setPriceError('');
-      setShouldUpdateLocations(true);
+      setUpdateLocations(!updateLocations);
     } catch (err) {
       console.error(err);
       setPriceError(err.response.data.error);
@@ -186,7 +186,7 @@ const Home = () => {
       }
     };
     fetchLocationsList();
-  }, [axios, shouldUpdateLocations]);
+  }, [axios, updateLocations]);
 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
