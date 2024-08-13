@@ -20,7 +20,7 @@ const Home = () => {
   const [priceId, setPriceId] = useState('');
   const [locations, setLocationsList] = useState([]);
   const inputRef = useRef(null);
-  const [shouldUpdateUsers, setShouldUpdateUsers] = useState(false);
+  const [updateUsers, setUpdateUsers] = useState(false);
   const [shouldUpdateLocations, setShouldUpdateLocations] = useState(false);
 
   const onFromChange = option => {
@@ -80,7 +80,7 @@ const Home = () => {
       setName('');
       setAddress('');
       inputRef.current.focus();
-      setShouldUpdateUsers(true);
+      setUpdateUsers(!updateUsers);
     } catch (err) {
       if (err.response) {
         setError(err.response.data.error);
@@ -93,6 +93,7 @@ const Home = () => {
 
   const addPrice = async () => {
     try {
+      setPriceSuccess('');
       const response = await axios.post('/api/v1/pricing/add', {
         from,
         to,
@@ -115,6 +116,7 @@ const Home = () => {
 
   const fetchPrice = async () => {
     try {
+      setPriceError('');
       const priceResponse = await axios.get(
         `/api/v1/pricing/search?from=${from}&to=${to}`
       );
@@ -142,7 +144,7 @@ const Home = () => {
     try {
       await axios.delete(`/api/v1/pricing/${priceId}/delete`);
 
-      setPriceSuccess('Successfully delete record');
+      setPriceSuccess('Successfully deleted record');
       setPriceError('');
     } catch (err) {
       console.error(err);
@@ -169,7 +171,7 @@ const Home = () => {
     };
 
     fetchLastUpdatedUsers();
-  }, [axios, shouldUpdateUsers]);
+  }, [axios, updateUsers]);
 
   useEffect(() => {
     const fetchLocationsList = async () => {
