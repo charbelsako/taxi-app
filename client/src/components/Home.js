@@ -15,6 +15,7 @@ const Home = () => {
   const [priceError, setPriceError] = useState('');
   const [customerList, setCustomerList] = useState([]);
   const [from, setFrom] = useState('');
+  const [newFromName, setNewFromName] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState('');
   const [priceId, setPriceId] = useState('');
@@ -22,6 +23,7 @@ const Home = () => {
   const inputRef = useRef(null);
   const [updateUsers, setUpdateUsers] = useState(false);
   const [updateLocations, setUpdateLocations] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const onFromChange = option => {
     setFrom(option.value);
@@ -43,6 +45,10 @@ const Home = () => {
   };
   const onAddressChange = e => {
     setAddress(e.target.value);
+  };
+
+  const onNewFromNameChange = e => {
+    setNewFromName(e.target.value);
   };
 
   const fetchUserData = async e => {
@@ -155,6 +161,32 @@ const Home = () => {
       setFrom('');
       setTo('');
     }
+  };
+
+  const renameFrom = async () => {
+    try {
+      const fromName = newFromName.toLowerCase();
+      if (from === '' || newFromName === '') {
+        throw new Error('Missing data to rename');
+      }
+
+      await axios.patch('/api/v1/pricing/rename-location-name', {
+        originalName: from,
+        updatedName: fromName,
+      });
+
+      setPriceSuccess(`Renamed location ${from} to ${fromName}`);
+      setPriceError('');
+      setUpdateLocations(!updateLocations);
+    } catch (err) {
+      console.error(err);
+      setPriceError(err.message);
+      setPriceSuccess('');
+    }
+  };
+
+  const setUpdate = async () => {
+    setIsUpdating(!isUpdating);
   };
 
   useEffect(() => {
@@ -323,7 +355,35 @@ const Home = () => {
               options={formatOptions(locations)}
             />
           </div>
+          <div className='col-2'>
+            <button className='btn btn-info' onClick={setUpdate}>
+              {isUpdating ? 'Hide ' : 'Show '} Update
+            </button>
+          </div>
         </div>
+        {isUpdating && (
+          <div className='row mt-3 d-flex align-items-center'>
+            <div className='col-2'>
+              <label htmlFor='from' className='my-auto font-weight-bold'>
+                New Name
+              </label>
+            </div>
+
+            <div className='col-6'>
+              <TextFieldGroup
+                placeholder='Enter new name'
+                value={newFromName}
+                onChange={onNewFromNameChange}
+                type='text'
+              />
+            </div>
+            <div className='col-2'>
+              <button className='btn btn-danger' onClick={renameFrom}>
+                Rename
+              </button>
+            </div>
+          </div>
+        )}
         <div className='row align-items-center mt-4'>
           <div className='col-2'>
             <label htmlFor='to' className='my-auto'>
@@ -346,6 +406,7 @@ const Home = () => {
             </button>
           </div>
         </div>
+
         <div className='row align-items-center mt-4 '>
           <div className='col-2'>
             <label htmlFor='price' className='my-auto'>
@@ -360,13 +421,13 @@ const Home = () => {
               isLarge={false}
             />
           </div>
-          <div className='col-2'>
+        </div>
+        <div className='row mb-5'>
+          <div className='col-2 d-flex mt-4'>
             <button className='btn btn-danger' onClick={deleteRecord}>
               Delete Record
             </button>
           </div>
-        </div>
-        <div className='row'>
           <div className='col-8 mt-4 d-flex justify-content-end'>
             <button className='btn btn-primary' onClick={addPrice}>
               Add / Update Price

@@ -25,6 +25,20 @@ router.post('/add', verifyJWT, async (req, res) => {
   }
 });
 
+router.patch('/rename-location-name', verifyJWT, async (req, res) => {
+  try {
+    const { originalName, updatedName } = req.body;
+    await Pricing.updateMany({ from: originalName }, { from: updatedName });
+    await Pricing.updateMany({ to: originalName }, { to: updatedName });
+    sendResponse(res, {
+      message: 'Successfully updated location name (everywhere)',
+    });
+  } catch (error) {
+    console.error('Error when renaming locations:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 router.get('/search', verifyJWT, async (req, res) => {
   try {
     const { from, to } = req.query;
