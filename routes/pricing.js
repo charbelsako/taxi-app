@@ -28,7 +28,7 @@ router.post('/add', verifyJWT, async (req, res) => {
 router.get('/search', verifyJWT, async (req, res) => {
   try {
     const { from, to } = req.query;
-    const price = await Pricing.findOne({ from, to });
+    const price = await Pricing.findOne({ from, to, isDeleted: false });
     if (!price) {
       return sendError({ res, error: 'Could not find price', code: 404 });
     }
@@ -49,6 +49,32 @@ router.get('/locations', verifyJWT, async (req, res) => {
     sendResponse(res, uniqueLocations);
   } catch (error) {
     console.error('Error while fetching to locations', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.delete('/:id/delete', verifyJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Pricing.findOneAndUpdate(id, { isDeleted: true });
+    sendResponse(res, { message: `Successfully deleted record ${id}` });
+  } catch (error) {
+    console.error('Error while deleting record price');
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.patch('/:id/update', verifyJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedPrice = await Pricing.findOneAndUpdate(
+      id,
+      { from, to, price },
+      { new: true }
+    );
+    sendResponse(res, updatedPrice);
+  } catch (error) {
+    console.error('Error while deleting record price');
     res.status(500).json({ message: 'Internal server error' });
   }
 });
