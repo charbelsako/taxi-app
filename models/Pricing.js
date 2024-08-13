@@ -6,6 +6,7 @@ const pricingSchema = new mongoose.Schema({
   to: String,
   price: Number,
   currency: String,
+  isDeleted: { type: Boolean, default: false },
 });
 
 pricingSchema.plugin(autoIncrement, {
