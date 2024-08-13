@@ -17,6 +17,7 @@ const Home = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState('');
+  const [priceId, setPriceId] = useState('');
   const [locations, setLocationsList] = useState([]);
   const inputRef = useRef(null);
   const [shouldUpdateUsers, setShouldUpdateUsers] = useState(false);
@@ -118,6 +119,7 @@ const Home = () => {
         `/api/v1/pricing/search?from=${from}&to=${to}`
       );
       setPrice(priceResponse.data.data.price);
+      setPriceId(priceResponse.data.data._id);
       setPriceError('');
     } catch (err) {
       console.error(err);
@@ -134,6 +136,23 @@ const Home = () => {
     console.log(inputRef);
     console.log(inputRef.current);
     inputRef.current.focus();
+  };
+
+  const deleteRecord = async () => {
+    try {
+      await axios.delete(`/api/v1/pricing/${priceId}/delete`);
+
+      setPriceSuccess('Successfully delete record');
+      setPriceError('');
+    } catch (err) {
+      console.error(err);
+      setPriceError(err.message);
+      setPriceSuccess('');
+    } finally {
+      setPrice('');
+      setFrom('');
+      setTo('');
+    }
   };
 
   useEffect(() => {
@@ -338,6 +357,11 @@ const Home = () => {
               onChange={onPriceChange}
               isLarge={false}
             />
+          </div>
+          <div className='col-2'>
+            <button className='btn btn-danger' onClick={deleteRecord}>
+              Delete Record
+            </button>
           </div>
         </div>
         <div className='row'>
