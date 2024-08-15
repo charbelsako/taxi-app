@@ -424,11 +424,11 @@ const Home = () => {
           </div>
         </div>
         <div className='row mb-5'>
-          <div className='col-2 d-flex mt-4'>
+          {/* <div className='col-2 d-flex mt-4'>
             <button className='btn btn-danger' onClick={deleteRecord}>
               Delete Record
             </button>
-          </div>
+          </div> */}
           <div className='col-8 mt-4 d-flex justify-content-end'>
             <button className='btn btn-primary' onClick={addPrice}>
               Add / Update Price
