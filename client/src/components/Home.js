@@ -24,6 +24,7 @@ const Home = () => {
   const [updateUsers, setUpdateUsers] = useState(false);
   const [updateLocations, setUpdateLocations] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isAddingPrice, setIsAddingPrice] = useState(false);
 
   const onFromChange = option => {
     setFrom(option.value);
@@ -100,6 +101,7 @@ const Home = () => {
   const addPrice = async () => {
     try {
       setPriceSuccess('');
+      setIsAddingPrice(true);
       const response = await axios.post('/api/v1/pricing/add', {
         from,
         to,
@@ -112,11 +114,13 @@ const Home = () => {
         setPriceSuccess('Added Price');
       }
       setPriceError('');
+      setIsAddingPrice(false);
       setUpdateLocations(!updateLocations);
     } catch (err) {
       console.error(err);
       setPriceError(err.response.data.error);
       setPriceSuccess('');
+      setIsAddingPrice(false);
     }
   };
 
@@ -430,7 +434,11 @@ const Home = () => {
             </button>
           </div> */}
           <div className='col-8 mt-4 d-flex justify-content-end'>
-            <button className='btn btn-primary' onClick={addPrice}>
+            <button
+              className='btn btn-primary'
+              onClick={addPrice}
+              disabled={isAddingPrice}
+            >
               Add / Update Price
             </button>
           </div>
