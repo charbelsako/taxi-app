@@ -135,7 +135,7 @@ const Home = () => {
       setPriceError('');
     } catch (err) {
       console.error(err);
-      setPriceError('Could not find price');
+      setPriceError(err.message);
       setPriceSuccess('');
       setPrice('');
     }
@@ -237,31 +237,31 @@ const Home = () => {
   };
 
   return (
-    <div className='container'>
-      <div className=''>
-        <div className='text-6xl'>
+    <div className="container">
+      <div className="">
+        <div className="text-6xl">
           <h1>Home</h1>
         </div>
-        {success && <div className='alert alert-success'>{success}</div>}
-        {error && <div className='alert alert-danger'>{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
+        {error && <div className="alert alert-danger">{error}</div>}
         {/* Phone Input */}
         <form onSubmit={fetchUserData}>
-          <div className='row align-items-center mt-4'>
-            <div className='col-2'>
-              <label htmlFor=''>Phone:</label>
+          <div className="row align-items-center mt-4">
+            <div className="col-2">
+              <label htmlFor="">Phone:</label>
             </div>
-            <div className='col-6'>
+            <div className="col-6">
               <TextFieldGroup
-                placeholder='Enter Phone'
+                placeholder="Enter Phone"
                 value={phone}
-                name='phone'
+                name="phone"
                 onChange={onPhoneChange}
                 isLarge={true}
                 inputRef={inputRef}
               />
             </div>
-            <div className='col-4'>
-              <button className='btn btn-success' type='submit'>
+            <div className="col-4">
+              <button className="btn btn-success" type="submit">
                 Search
               </button>
             </div>
@@ -269,45 +269,45 @@ const Home = () => {
         </form>
 
         {/* Name */}
-        <div className='row align-items-center mt-4'>
-          <div className='col-2'>
-            <label htmlFor=''>Name:</label>
+        <div className="row align-items-center mt-4">
+          <div className="col-2">
+            <label htmlFor="">Name:</label>
           </div>
-          <div className='col-6'>
+          <div className="col-6">
             <TextFieldGroup
-              placeholder='Enter Name'
+              placeholder="Enter Name"
               value={name}
               onChange={onNameChange}
-              name='name'
+              name="name"
               isLarge={true}
             />
           </div>
         </div>
         {/* Address */}
-        <div className='row align-items-center mt-4'>
-          <div className='col-2'>
-            <label htmlFor=''>Address:</label>
+        <div className="row align-items-center mt-4">
+          <div className="col-2">
+            <label htmlFor="">Address:</label>
           </div>
-          <div className='col-6'>
+          <div className="col-6">
             <TextAreaFieldGroup
-              placeholder='address'
+              placeholder="address"
               value={address}
               onChange={onAddressChange}
               isLarge={true}
             />
           </div>
         </div>
-        <div className='row'>
-          <div className='col-2'>
-            <div className='mt-4'>
-              <button className='btn btn-info' onClick={clearForm}>
+        <div className="row">
+          <div className="col-2">
+            <div className="mt-4">
+              <button className="btn btn-info" onClick={clearForm}>
                 Clear
               </button>
             </div>
           </div>
-          <div className='col-6'>
-            <div className='mt-4 d-flex align-items-center justify-content-end'>
-              <button className='btn btn-primary' onClick={createCustomer}>
+          <div className="col-6">
+            <div className="mt-4 d-flex align-items-center justify-content-end">
+              <button className="btn btn-primary" onClick={createCustomer}>
                 Create / Update Customer
               </button>
             </div>
@@ -317,7 +317,7 @@ const Home = () => {
       <div>
         <h1>Customer List</h1>
         <div style={{ height: '400px', overflowY: 'scroll' }}>
-          <table className='table' style={{ display: 'block' }}>
+          <table className="table" style={{ display: 'block' }}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -341,18 +341,18 @@ const Home = () => {
       <div>
         <h1>Pricing</h1>
         {priceSuccess && (
-          <div className='alert alert-success'>{priceSuccess}</div>
+          <div className="alert alert-success">{priceSuccess}</div>
         )}
-        {priceError && <div className='alert alert-danger'>{priceError}</div>}
-        <div className='row d-flex align-items-center'>
-          <div className='col-2'>
-            <label htmlFor='from' className='my-auto'>
+        {priceError && <div className="alert alert-danger">{priceError}</div>}
+        <div className="row d-flex align-items-center">
+          <div className="col-2">
+            <label htmlFor="from" className="my-auto">
               From
             </label>
           </div>
-          <div className='col-6'>
+          <div className="col-6">
             <CreatableSelect
-              placeholder='Enter From Area'
+              placeholder="Enter From Area"
               value={formatOptions(locations).find(
                 option => option.value === from
               )}
@@ -360,44 +360,44 @@ const Home = () => {
               options={formatOptions(locations)}
             />
           </div>
-          <div className='col-2'>
-            <button className='btn btn-info' onClick={setUpdate}>
+          <div className="col-2">
+            <button className="btn btn-info" onClick={setUpdate}>
               {isUpdating ? 'Hide ' : 'Show '} Update
             </button>
           </div>
         </div>
         {isUpdating && (
-          <div className='row mt-3 d-flex align-items-center'>
-            <div className='col-2'>
-              <label htmlFor='from' className='my-auto font-weight-bold'>
+          <div className="row mt-3 d-flex align-items-center">
+            <div className="col-2">
+              <label htmlFor="from" className="my-auto font-weight-bold">
                 New Name
               </label>
             </div>
 
-            <div className='col-6'>
+            <div className="col-6">
               <TextFieldGroup
-                placeholder='Enter new name'
+                placeholder="Enter new name"
                 value={newFromName}
                 onChange={onNewFromNameChange}
-                type='text'
+                type="text"
               />
             </div>
-            <div className='col-2'>
-              <button className='btn btn-danger' onClick={renameFrom}>
+            <div className="col-2">
+              <button className="btn btn-danger" onClick={renameFrom}>
                 Rename
               </button>
             </div>
           </div>
         )}
-        <div className='row align-items-center mt-4'>
-          <div className='col-2'>
-            <label htmlFor='to' className='my-auto'>
+        <div className="row align-items-center mt-4">
+          <div className="col-2">
+            <label htmlFor="to" className="my-auto">
               To
             </label>
           </div>
-          <div className='col-6'>
+          <div className="col-6">
             <CreatableSelect
-              placeholder='Enter To Area'
+              placeholder="Enter To Area"
               value={formatOptions(locations).find(
                 option => option.value === to
               )}
@@ -405,37 +405,37 @@ const Home = () => {
               options={formatOptions(locations)}
             />
           </div>
-          <div className='col-2'>
-            <button className='btn btn-success' onClick={fetchPrice}>
+          <div className="col-2">
+            <button className="btn btn-success" onClick={fetchPrice}>
               Search
             </button>
           </div>
         </div>
 
-        <div className='row align-items-center mt-4 '>
-          <div className='col-2'>
-            <label htmlFor='price' className='my-auto'>
+        <div className="row align-items-center mt-4 ">
+          <div className="col-2">
+            <label htmlFor="price" className="my-auto">
               Price
             </label>
           </div>
-          <div className='col-6'>
+          <div className="col-6">
             <TextFieldGroup
-              placeholder='Enter Price'
+              placeholder="Enter Price"
               value={price}
               onChange={onPriceChange}
               isLarge={false}
             />
           </div>
         </div>
-        <div className='row mb-5'>
+        <div className="row mb-5">
           {/* <div className='col-2 d-flex mt-4'>
             <button className='btn btn-danger' onClick={deleteRecord}>
               Delete Record
             </button>
           </div> */}
-          <div className='col-8 mt-4 d-flex justify-content-end'>
+          <div className="col-8 mt-4 d-flex justify-content-end">
             <button
-              className='btn btn-primary'
+              className="btn btn-primary"
               onClick={addPrice}
               disabled={isAddingPrice}
             >
