@@ -60,6 +60,10 @@ const Home = () => {
         return;
       }
       const customer = await axios.get(`/api/v1/customer/${phone}`);
+      if (!customer.data.data) {
+        setError('Customer not found');
+        return;
+      }
       setName(customer.data.data.name);
       setAddress(customer.data.data.address);
       setError('');
