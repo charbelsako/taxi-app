@@ -18,7 +18,7 @@ const Home = () => {
   const [newFromName, setNewFromName] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState('');
-  const [priceId, setPriceId] = useState('');
+  // const [priceId, setPriceId] = useState('');
   const [locations, setLocationsList] = useState([]);
   const inputRef = useRef(null);
   const [updateUsers, setUpdateUsers] = useState(false);
@@ -136,7 +136,7 @@ const Home = () => {
         `/api/v1/pricing/search?from=${from}&to=${to}`
       );
       setPrice(priceResponse.data.data.price);
-      setPriceId(priceResponse.data.data._id);
+      // setPriceId(priceResponse.data.data._id);
       setPriceSuccess('Found Price');
       setPriceError('');
     } catch (err) {
@@ -156,22 +156,23 @@ const Home = () => {
     inputRef.current.focus();
   };
 
-  const deleteRecord = async () => {
-    try {
-      await axios.delete(`/api/v1/pricing/${priceId}/delete`);
+  // @NOTE: no longer used
+  // const deleteRecord = async () => {
+  //   try {
+  //     await axios.delete(`/api/v1/pricing/${priceId}/delete`);
 
-      setPriceSuccess('Successfully deleted record');
-      setPriceError('');
-    } catch (err) {
-      console.error(err);
-      setPriceError(err.message);
-      setPriceSuccess('');
-    } finally {
-      setPrice('');
-      setFrom('');
-      setTo('');
-    }
-  };
+  //     setPriceSuccess('Successfully deleted record');
+  //     setPriceError('');
+  //   } catch (err) {
+  //     console.error(err);
+  //     setPriceError(err.message);
+  //     setPriceSuccess('');
+  //   } finally {
+  //     setPrice('');
+  //     setFrom('');
+  //     setTo('');
+  //   }
+  // };
 
   const renameFrom = async () => {
     try {
