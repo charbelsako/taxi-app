@@ -127,14 +127,16 @@ const Home = () => {
   const fetchPrice = async () => {
     try {
       setPriceError('');
+      setPriceSuccess('');
       const priceResponse = await axios.get(
         `/api/v1/pricing/search?from=${from}&to=${to}`
       );
       setPrice(priceResponse.data.data.price);
       setPriceId(priceResponse.data.data._id);
+      setPriceSuccess('Found Price');
       setPriceError('');
     } catch (err) {
-      console.error(err);
+      console.log(err.response.data);
       setPriceError(err.message);
       setPriceSuccess('');
       setPrice('');
