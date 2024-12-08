@@ -27,5 +27,12 @@
     "mongoose-plugin-autoinc": "^1.1.9",
     "nodemon": "^3.1.4",
     "react-router-dom": "^6.22.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.13.0",
+    "prettier": "3.4.2"
   }
 }

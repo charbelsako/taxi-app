@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { autoIncrement } = require('mongoose-plugin-autoinc');
+const mongoose = require("mongoose");
+const { autoIncrement } = require("mongoose-plugin-autoinc");
 
 const customerSchema = new mongoose.Schema(
   {
@@ -11,9 +11,10 @@ const customerSchema = new mongoose.Schema(
 );
 
 customerSchema.plugin(autoIncrement, {
-  model: 'customer',
-  field: '_id',
+  model: "customer",
+  field: "_id",
   startAt: 1,
 });
 
-module.exports = Customer = mongoose.model('customer', customerSchema);
+const Customer = mongoose.model("customer", customerSchema);
+module.exports = Customer;
