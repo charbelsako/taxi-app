@@ -13,9 +13,13 @@ const cookieOptions = {
   sameSite: "none",
 };
 
-const test = {
+const xtest = {
+  x: 1,
+  y: 2,
 };
+
 module.exports = {
   statusCodes,
+  xtest,
   cookieOptions,
 };
