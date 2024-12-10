@@ -18,9 +18,9 @@ const xtest = {
   y: 2,
 };
 
-if (xtest.x == 2) {
+if (xtest.y == 2) {
   console.log("something");
-} else if (xtest.y == 1) {
+} else if (xtest.x == 1) {
   console.log("nothing");
 } else {
   console.log("what");
